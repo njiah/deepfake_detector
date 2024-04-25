@@ -1,0 +1,116 @@
+{% extends 'home.html' %}
+{% block content %}
+    <div class="container">
+        
+        <form method="post" enctype="multipart/form-data">
+            <div class="card">
+                <div class="col-8"><p>Dataset:{{modelname}}</p></div>
+                <div class="col-4"><a class="col" href="/train">Retrain Model</a></div>
+                <p>Training Accuracy:{{train_acc}}</p>
+                <p>Validation Accuracy:{{val_acc}}</p>
+                <p>Training Loss:{{train_loss}}</p>
+                <p>Validation Loss:{{val_loss}}</p>
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Show Benchmark Dataset</button>    
+            </div>
+            <br/>
+            
+            <div class="modal" id="myModal">
+                <div class="modal-dialog modal-dialog-scrollable">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">Benchmark Dataset</h4>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="flex-container">
+                                
+                                {% for img in custom_images %}
+                                <div class="flex-item">
+                                    <img src="{{ url_for('static', filename=img) }}" class="img-thumbnail" alt="custom_image">
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br/>
+            
+            {% if usertype == 'admin' %}
+            <div class="card">
+                <h4>Retrain a model:</h4>
+                <label for="retrainmodel">Select a model to retrain:</label>
+                <select id="retrainmodel" name="retrainmodel">
+                    {% for model in models %}
+                    <option value="{{model}}">{{model}}</option>
+                    {% endfor %}
+                </select>
+                <br/>
+                <input type="submit" value="Retrain" class="btn btn-primary">
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#imageModal">Show available training images</button>
+                <div class="modal" id="imageModal">
+                    <div class="modal-dialog modal-dialog-scrollable">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title">Saved images from users</h4>
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="flex-container">
+                                    <h4>Fake Images:</h4>
+                                    {% for fakeimg in uploadedfakeimages %}
+                                    <div class="flex-item">
+                                        <img src="{{ url_for('static', filename=fakeimg) }}" class="img-thumbnail" alt="user uploaded fake image">
+                                    </div>
+                                    {% endfor %}
+                                    <h4>Real Images:</h4>
+                                    {% for realimg in uploadedrealimages %}
+                                    <div class="flex-item">
+                                        <img src="{{ url_for('static', filename=realimg) }}" class="img-thumbnail" alt="user uploaded real image">
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>    
+            </div>
+            <div class="card">
+                <p><h4>Upload a new model:</h4>
+                    <input type="file" name="modelfile" id="modelfile" accept=".h5">
+                </p>
+                
+                <br/>
+                <input type="submit" value="Upload" class="btn btn-primary">
+            </div>
+            {% if summary != None%}
+            <div class="card">
+                <h4>Model Summary:</h4>
+                <p>{{summary}}</p>
+            </div>
+            {% endif %}
+            <div class="card">
+                <h4>Available Models:</h4>
+                <table>
+                    {% for model in models %}
+                    <tr>
+                        <td>{{model}}</td>
+                        <td><a href="/change_model/{{model}}"+ class="btn btn-primary">Use</a></td>
+                    </tr>
+                    {% endfor %}
+                </table>
+                {% if message %}
+                <div class="alert alert-success" role="alert" id="successMessage">
+                    {{message}}
+                </div>
+                {% endif %}
+            </div>
+            <script>
+                setTimeout(function() {
+                    $('#successMessage').fadeOut('fast');
+                }, 2000);
+            </script>
+            {% endif %}
+        </form>
+    </div>
+{% endblock %}

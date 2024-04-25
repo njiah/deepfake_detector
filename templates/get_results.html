@@ -1,0 +1,28 @@
+{% extends 'home.html' %}
+{% block title %}Results{% endblock %}
+{% block content %}
+    <div class="container">
+        <div class="jumbotron">
+            <div class="card">
+                <div class="col">
+                    {% if imagetype == 'upload' %}
+                    <img src="{{url_for('static', filename='uploads/image.png')}}">
+                    {% elif imagetype == 'example1' %}
+                    <img src="{{url_for('static', filename='img/eg_1.jpeg')}}">
+                    {% elif imagetype == 'example2' %}
+                    <img src="{{url_for('static', filename='img/eg_2.jpeg')}}">
+                    {% elif imagetype == 'example3' %}
+                    <img src="{{url_for('static', filename='img/eg_3.jpeg')}}">
+                    {% endif %}
+                </div>
+                <div class="col">
+                    <h1>Results : {{result}}</h1>
+                    <div class="alert alert-info" role="alert">
+                            <p>The image is {{result}} with the probability of {{probability}}%.</p>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+{% endblock %}

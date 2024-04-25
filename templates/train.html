@@ -1,0 +1,37 @@
+{% extends 'home.html' %}
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h4>New Data:</h4>
+                <img>
+            </div>
+        </div>
+        <form method="POST">
+            <div class="form-group">
+                <label for="backbone">Backbone Model:</label>
+                <select id="backbone" name="backbone">
+                    <option value="effnet">Efficient Net</option>
+                    <option value="vgg">VGG16</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="epoch">Number of epochs:</label>
+                <input type="range" id="epoch" name="epoch" min="0" max="10" step="1">
+            </div>
+            <div class="form-group">
+                <label for="batchsize">Batch Size:</label>
+                <input type="number" class="form-control" id="batchsize" name="batchsize">
+            </div>
+            <div class="form-group">
+                <label for="flip">Horizontal Flip:</label>
+                <input type="checkbox" class="form-control" id="flip" name="flip">
+            </div>
+            <div class="form-group">
+                <label for="shuffle">Shuffle:</label>
+                <input type="checkbox" class="form-control" id="shuffle" name="shuffile">
+            </div>
+            <button type="submit" class="btn btn-primary">Train</button>
+        </form>
+    </div>
+{% endblock %}

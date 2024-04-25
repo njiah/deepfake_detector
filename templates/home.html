@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename = 'design.CSS')}}"/>
+
+    <!-- Import Bootstrap CDM -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+</head>
+
+<body>
+    {% block navbar %}
+    <div class="navbar">
+      <div class="nav-links">
+        <ul>
+        <li><a href="/index" class="navbar-brand">Home</a></li>
+        <li><a href="/model" class="navbar-brand">Model</a></li>
+        </ul>
+      </div>
+      <div class="nav-links-right">
+        <ul>
+          {% if session['logged_in'] %}
+          <li><a href="/profile" class="navbar-brand">Profile</a></li>
+          <li><a href="/logout" class="navbar-brand">Logout</a></li>
+          {% else %}
+          <li><a href="/login" class="navbar-brand">Sign In</a></li>
+          {% endif %}
+        </ul>
+      </div>
+    </div>
+    {% endblock %}
+    <div class="body-content">
+        {% block content %}
+        <div class="container">
+            <div class="jumbotron">
+                <h1>Deepfake Detector</h1>
+                <br/>
+                <div class="hero">
+                  <form action="/predict/uploads" method="POST" enctype="multipart/form-data">
+                    <label for="input-file" id="drop-area">
+                      <input type="file" accept="image/*" name="image" id="image" hidden>
+                      <div id="img-view">
+                        <img src="{{url_for('static', filename = 'img/dragicon.png')}}" alt="Upload Image">
+                        <p>Drag or drop image or click here<br>to upload</p>
+                        <span>Upload any images</span>
+                      </div>
+                    </label>
+                    <br/>
+                    <button name="image" id="sendbutton" class="btn btn-light">Upload Image</button>
+                  </form>
+                </div>
+            </div>
+            <div>
+                    <h3>Examples:</h3>
+            </div>
+            <div class="flex-container">
+              <form action="/predict/examples1" method="POST" enctype="multipart/form">
+                
+                <div class="flex-item"> 
+                    <button type="submit">
+                      <img src="{{url_for('static', filename = 'img/eg_1.jpeg')}}" alt="Joe Biden Deepfake">
+                      <div class="overlay">
+                        <div class="text">Joe Biden Deepfake</div>
+                    </div>
+                    </button>
+                    <input type="hidden" id="image" name="imagename" visibility="hidden" value="static/img/eg_1.jpeg">
+                    
+                </div>
+              </form>
+              <form action="/predict/examples2" method="POST" enctype="multipart/form">
+
+                <div class="flex-item"> 
+                    <button type="submit">
+                      <img src="{{url_for('static', filename = 'img/eg_2.jpeg')}}" alt="Tom Cruise Deepfake">
+                        <div class="overlay">
+                            <div class="text">Tom Cruise Deepfake</div>
+                        </div>
+                    </button>
+                    <input type="hidden" id="image" name="imagename" visibility="hidden" value="static/img/eg_2.jpeg">
+                    
+                </div>
+              </form>
+              <form action="/predict/examples3" method="POST" enctype="multipart/form">
+                <div class="flex-item"> 
+                    <button type="submit">
+                      <img src="{{url_for('static', filename = 'img/eg_3.jpeg')}}" alt="Mona Lisa Deepfake">
+                      <div class="overlay">
+                        <div class="text">Mona Lisa Deepfake</div>
+                      </div>
+                    </button>
+                    <input type="hidden" id="image" name="imagename" visibility="hidden" value="static/img/eg_3.jpeg">
+                    
+                </div>
+              </form>
+            </div>
+            <script>
+              const dropArea = document.getElementById('drop-area');
+              const image = document.getElementById('image');
+              const imageView = document.getElementById('img-view');
+
+              image.addEventListener('change', uploadImage);
+
+              function uploadImage() {
+                  let imgLink = URL.createObjectURL(image.files[0]);
+                  imageView.style.backgroundImage = `url(${imgLink})`;
+                  imageView.textContent = '';
+                  imageView.style.border = 0;
+              }
+
+              dropArea.addEventListener('dragover', function(e){
+                  e.preventDefault();
+              });
+
+              dropArea.addEventListener('drop', function(e){
+                  e.preventDefault();
+                  image.files = e.dataTransfer.files;
+                  uploadImage();
+              });
+
+            </script>
+
+        {% endblock %}
+        <hr/>
+        <footer class="fixed-bottom">
+            <p>&copy; Student ID : 21003873</p>
+        </footer>
+    </div>
+</body>
+</html>

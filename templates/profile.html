@@ -1,0 +1,11 @@
+{% extends 'home.html' %}
+{% block content %}
+    <div class="container">
+        <div class="login-signup-form">
+            <img src="{{ url_for('static', filename='img/profile.png') }}" alt="logo" class="logo">
+            <h4>{{username}}</h4>
+            <p>Email: {{email}}</p>
+            <p>User Type: {{usertype}}</p>
+            <button class="btn btn-primary">Change Password</button>
+    </div>
+{% endblock %}
